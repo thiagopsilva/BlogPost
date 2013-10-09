@@ -13,6 +13,14 @@ When /^I go to (.+)$/ do |page_name|
   visit path_to(page_name)
 end
 
+When /^I confirm popup$/ do
+  page.driver.browser.switch_to.alert.accept
+end
+
+When /^I dismiss popup$/ do
+  page.driver.browser.switch_to.alert.dismiss
+end
+
 When /^I press (.+)$/ do |button|
   click_button(button)
 end

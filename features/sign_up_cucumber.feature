@@ -43,5 +43,6 @@ Feature: Sing Up
 
 		When I am on the homepage
 		And I follow Destroy
+		When I confirm popup
 		Then I should see Blog post deleted sucessfully.
 
