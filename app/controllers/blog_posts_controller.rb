@@ -15,11 +15,20 @@ class BlogPostsController < ApplicationController
 
   # GET /blog_posts/new
   def new
-    @blog_post = BlogPost.new
+    if current_user.is_admin?
+      @blog_post = BlogPost.new
+    else
+      redirect_to root_path, notice: "You can't create a blog."
+    end
   end
 
   # GET /blog_posts/1/edit
   def edit
+    if !current_user.is_admin?
+      redirect_to root_path, notice: "You can't edit a blog."
+    else
+      @blog_post = BlogPost.find(params[:id])
+    end
   end
 
   # POST /blog_posts

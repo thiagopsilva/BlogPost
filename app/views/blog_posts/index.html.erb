@@ -19,13 +19,16 @@
         <td><%= blog_post.content %></td>
         <td><%= blog_post.author %></td>
         <td><%= link_to 'Show', blog_post %></td>
-        <td><%= link_to 'Edit', edit_blog_post_path(blog_post) %></td>
-        <td><%= link_to 'Destroy', blog_post, method: :delete, data: { confirm: 'Are you sure?' }  %></td>
+        <% if(current_user.present? && current_user.is_admin?) %>
+          <td><%= link_to 'Edit', edit_blog_post_path(blog_post) %></td>
+          <td><%= link_to 'Destroy', blog_post, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Blog post', new_blog_post_path %>
+<% if(current_user.present? && current_user.is_admin?) %>
+  <%= link_to 'New Blog post', new_blog_post_path %>
+<% end %>

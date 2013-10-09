@@ -3,24 +3,16 @@ Feature: Sing Up
 	As an User
 	I want to see sing up page
 
-	Scenario: To sign up with devise
-		When I go to the sing up page
-		Then I should see Sign up
-		And I should see Password confirmation
-		When I fill in user_email with email@cucumber.com
-		And I fill in user_password with 12345678
-		And I fill in user_password_confirmation with 12345678
-		And I press Sign up
-		Then I should see Welcome! You have signed up successfully.
 
-	Scenario: Application
-		Given I have users with email test_user@testmail.com and password password
-		When I am on the signin page
-		And I fill in user_email with test_user@testmail.com
-		And I fill in user_password with password
-		And I press Login
-		Then I should see Signed in successfully
-		
+	Scenario: Login as User
+		Given user@test.com is logged in
+
+	Scenario: Login as Admin
+		Given admin@test.com is logged in as admin
+
+	Scenario: Admin CRUD
+		Given admin@test.com is logged in as admin
+
 		When I am on the homepage
 		And I follow New Blog post
 		And I fill in blog_post_title with Cucumber Test
@@ -46,3 +38,16 @@ Feature: Sing Up
 		When I confirm popup
 		Then I should see Blog post deleted sucessfully.
 
+	Scenario: User Blog
+		Given user@test.com is logged in
+		Given I have a blog with title Cucumber Test
+		When I am on the homepage
+		Then I should not see Destroy
+		And I should see Show
+		And I follow Show
+		Then I should see Title: Cucumber Test
+
+	Scenario: User Try to Create a blog
+		Given user@test.com is logged in
+		When I am on the new blog page
+		Then I should see You can't create a blog.

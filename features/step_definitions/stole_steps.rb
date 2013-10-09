@@ -3,6 +3,40 @@
 
 Given(/^I have users with email (.+) and password (.+)$/) do |username, password|
   User.create!(:email => username, :password => password, :password_confirmation => password)
+  User.last.update_attribute(:is_admin, false)
+end
+
+Given(/^I have admin users with email (.+) and password (.+)$/) do |username, password|
+  User.create!(:email => username, :password => password, :password_confirmation => password)
+  User.last.update_attribute(:is_admin, true)
+end
+
+Given /^(.*) is logged in$/ do |name|
+  steps %Q{
+    Given I have users with email #{name} and password password
+    When I am on the signin page
+    Then I should see Email
+    When I fill in user_email with #{name}
+    And I fill in user_password with password
+    And I press Login
+    Then I should see Signed in successfully
+  }
+end
+
+Given /^(.*) is logged in as admin$/ do |name|
+  steps %Q{
+    Given I have admin users with email #{name} and password password
+    When I am on the signin page
+    Then I should see Email
+    When I fill in user_email with #{name}
+    And I fill in user_password with password
+    And I press Login
+    Then I should see Signed in successfully
+  }
+end
+
+Given(/^I have a blog with title (.+)$/) do |title|
+  BlogPost.create!(:title => title, :content => "loren ipsun sit dor amet", :author => "some author")
 end
 
 Given /^I am on (.+)$/ do |page_name|
@@ -84,7 +118,7 @@ When /^I select "([^\"]*)" as the "([^\"]*)" date$/ do |date, date_label|
   select_date(date, :from => date_label)
 end
 
-When /^I check "([^\"]*)"$/ do |field|
+When /^I check (.+)$/ do |field|
   check(field) 
 end
 
@@ -104,8 +138,8 @@ Then /^I should see (.+)$/ do |text|
   page.should have_content(text)
 end
 
-Then /^I should not see "([^\"]*)"$/ do |text|
-  response.should_not contain(text)
+Then /^I should not see (.+)$/ do |text|
+  page.should_not have_content(text)
 end
 
 Then /^the "([^\"]*)" checkbox should be checked$/ do |label|

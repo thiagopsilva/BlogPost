@@ -8,6 +8,10 @@ module NavigationHelpers
       new_user_registration_path
     when /the signin page/
       user_session_path
+    when /the new blog page/
+      new_blog_post_path
+    when /the edit blog page/
+      edit_blog_post_path
     
     # Add more page name => path mappings here
     
